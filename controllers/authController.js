@@ -3,9 +3,11 @@ const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
 
 //register
+
 const createNewUser = async (req, res) => {
   try {
-    const { username, password, email } = req.body;
+    const { username, password, email, address, firstname, lastname } =
+      req.body;
     const encrypted = CryptoJS.AES.encrypt(
       password,
       process.env.PASS_SECRET
@@ -18,6 +20,9 @@ const createNewUser = async (req, res) => {
         username: username,
         email: email,
         password: encrypted,
+        address: address,
+        firstname: firstname,
+        lastname: lastname,
       });
       await newUser.save();
       res.status(201).json(newUser);
@@ -27,7 +32,42 @@ const createNewUser = async (req, res) => {
   }
 };
 
-//login
+//login passport
+
+// passport.use(new LocalStrategy({
+//   usernameField: 'username',
+//   passwordField: 'password'
+// },
+// (username, password, cb) => {
+// try {
+
+// } catch (err) {
+//   res.status(500).json(err)
+// }
+
+// }
+// ));
+
+// passport.use(new JWTStrategy({
+//   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+//   secretOrKey   : 'your_jwt_secret'
+// },
+// (jwtPayload, cb) => {
+
+// try {
+//   // find the user in db if needed
+//   if(jwtPayload.id == user.id) {
+//     return cb(null, user);
+//   } else {
+//     return cb(null, false);
+//   }
+// } catch (error) {
+//   return cb(error, false);
+// }
+// }
+// ));
+
+// login no passport
 const loginUser = async (req, res) => {
   try {
     const findUser = await User.findOne({ username: req.body.username });

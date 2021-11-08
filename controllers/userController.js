@@ -66,7 +66,7 @@ const deleteUser = async (req, res) => {
     await User.findByIdAndDelete(req.params._id);
     res.status(200).json("User has been deleted!");
   } catch (err) {
-    err.status(500).json(err);
+    res.status(500).json(err);
   }
 };
 
@@ -76,7 +76,7 @@ const getUser = async (req, res) => {
     const { password, ...others } = findUser._doc; //_doc contain data
     res.status(200).json({ ...others });
   } catch (err) {
-    err.status(500).json(err);
+    res.status(500).json(err);
   }
 };
 
@@ -89,7 +89,7 @@ const getUsers = async (req, res) => {
 
     res.status(200).json({ findUsers });
   } catch (err) {
-    err.status(500).json(err);
+    res.status(500).json(err);
   }
 };
 
@@ -100,7 +100,7 @@ const userStats = async (req, res) => {
 
   try {
     const data = await User.aggregate([
-      //match data that have createAt greaterThan($gte) lastYear
+      //match data that have createdAt greaterThan($gte) lastYear
       { $match: { createdAt: { $gte: lastYear } } },
       {
         $project: {
@@ -123,6 +123,7 @@ const userStats = async (req, res) => {
 
 module.exports = {
   verifyTokenAndAuthorization,
+  verifyToken,
   updateUser,
   verifyTokenAndAdmin,
   deleteUser,

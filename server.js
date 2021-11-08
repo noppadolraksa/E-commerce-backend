@@ -14,6 +14,9 @@ app.use(express.json());
 app.use("/auth", require("./routes/authRoute"));
 app.use("/user", require("./routes/userRoute"));
 app.use("/product", require("./routes/productRoute"));
+app.use("/cart", require("./routes/cartRoute"));
+app.use("/order", require("./routes/orderRoute"));
+app.use("/stripe", require("./routes/stripe"));
 
 app.listen(process.env.PORT, () => {
   console.log(`server is listening to ${process.env.PORT}`);

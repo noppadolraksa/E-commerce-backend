@@ -30,30 +30,42 @@ const deleteProduct = async (req, res) => {
     await Product.findByIdAndDelete(req.params._id);
     res.status(200).json("Product has been deleted!");
   } catch (err) {
-    err.status(500).json(err);
+    res.status(500).json(err);
   }
 };
 
 const getProduct = async (req, res) => {
   try {
-    const findProduct = await Product.findById(req.params._id);
-    const { password, ...others } = findProduct._doc; //_doc contain data
-    res.status(200).json({ ...others });
+    const product = await Product.findById(req.params._id);
+
+    res.status(200).json(product);
   } catch (err) {
-    err.status(500).json(err);
+    res.status(500).json(err);
   }
 };
 
 const getProducts = async (req, res) => {
-  const query = req.query.new;
+  const queryNew = req.query.new;
+  const queryCategory = req.query.category;
   try {
-    const findProducts = query
-      ? await Product.find().sort({ _id: -1 }).limit(5)
-      : await Product.find();
-
-    res.status(200).json({ findProducts });
+    let products;
+    if (queryNew) {
+      //find products by createAt date and limit 1 item
+      products = await Product.find().sort({ createdAt: -1 }).limit(1);
+    } else if (queryCategory) {
+      //find products by category
+      products = await Product.find({
+        categories: {
+          $in: [queryCategory],
+        },
+      });
+    } else {
+      //find all products
+      products = await Product.find();
+    }
+    res.status(200).json(products);
   } catch (err) {
-    err.status(500).json(err);
+    res.status(500).json(err);
   }
 };
 

@@ -2,18 +2,36 @@ const mongoose = require("mongoose");
 
 const ProductSchema = new mongoose.Schema(
   {
-    title: { type: String, required: true },
-    desc: { type: String, required: true },
+    title: { type: String, required: true, max: 50 },
+    desc: { type: String, required: true, max: 200 },
     img: { type: String, required: true },
     categories: { type: Array },
-    color: { type: String, required: true },
-    size: { type: String, required: true },
-    price: { type: Number, required: true },
-    actualPrice: { type: Number },
+    floorPrice: { type: Number },
+    ceilPrice: { type: Number },
     brand: { type: String, default: "none" },
-    discount: { type: Number },
+    sold: { type: Number, default: 0 },
+    likes: { type: Number, default: 0 },
+    condition: { type: String },
+    inStock: { type: Boolean, default: true },
+    filterTitleOne: { type: String },
+    filterTitleTwo: { type: String },
+    promotion: { type: Array },
+    product: [
+      {
+        price: { type: Number, required: true },
+        priceBeforeDiscount: { type: Number },
+        stock: { type: Number, default: 0 },
+        img: { type: String },
+        filterProductsOne: { type: String },
+        filterProductsTwo: { type: String },
+        inStock: { type: Boolean, default: true },
+        sku: { type: String, unique: true },
+      },
+    ],
   },
   { timestamps: true } // privillege for mongoose for timestamp
 );
 
-module.exports = mongoose.model("Product", ProductSchema);
+const Product = mongoose.model("Product", ProductSchema);
+
+module.exports = Product;
