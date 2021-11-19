@@ -25,6 +25,30 @@ const updateProduct = async (req, res) => {
   }
 };
 
+const likeProduct = async (req, res) => {
+  try {
+    const likeProuct = await Product.findByIdAndUpdate(req.body._id, {
+      $inc: { likes: 1 },
+      $push: { userLikes: req.body.user_id },
+    });
+    res.status(200).json(likeProduct);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+const unlikeProduct = async (req, res) => {
+  try {
+    const unlikeProuct = await Product.findByIdAndUpdate(req.body._id, {
+      $inc: { likes: -1 },
+      $pull: { userLikes: req.body.user_id },
+    });
+    res.status(200).json(unlikeProduct);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
 const deleteProduct = async (req, res) => {
   try {
     await Product.findByIdAndDelete(req.params._id);
@@ -75,4 +99,6 @@ module.exports = {
   deleteProduct,
   getProduct,
   getProducts,
+  likeProduct,
+  unlikeProduct,
 };

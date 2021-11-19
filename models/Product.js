@@ -11,6 +11,7 @@ const ProductSchema = new mongoose.Schema(
     brand: { type: String, default: "none" },
     sold: { type: Number, default: 0 },
     likes: { type: Number, default: 0 },
+    userLikes: { type: Array },
     condition: { type: String },
     inStock: { type: Boolean, default: true },
     filterTitleOne: { type: String },
